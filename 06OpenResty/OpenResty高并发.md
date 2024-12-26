@@ -341,8 +341,6 @@ end
 
 ![1564437629211](./images/1564437629211.png)
 
-
-
 (3)repeat...until语句[==满足条件结束==]
 
 Lua 编程语言中 repeat...until 循环语句不同于 for 和 while循环，for 和 while 循环的条件语句在当前循环执行开始时判断，而 repeat...until 循环的条件语句在当前循环结束后判断。
@@ -507,7 +505,7 @@ yum install openresty
 
 ### 3.2 安装nginx
 
-默认已经安装好了nginx,在目录：/usr/local/openresty/nginx 下。
+openresty 默认已经安装好了nginx,在目录：/usr/local/openresty/nginx 下。
 
 修改/usr/local/openresty/nginx/conf/nginx.conf,将配置文件使用的根设置为root,目的就是将来要使用lua脚本的时候 ，直接可以加载在root下的lua脚本。
 
@@ -527,6 +525,24 @@ vi nginx.conf
 访问地址：`http://192.168.211.132/`
 
 ![1560740292872](./images/1560740292872.png)
+
+### 3.4 安装redis
+
+下载  redis-4.0.10.tar.gz 并解压
+
+进入 redis-4.0.10 执行 make && make install 安装。 默认安装路径 /user/lcoal/bin
+
+启动redis
+
+```shell
+./redis-server redis.conf
+```
+
+进入redis客户端
+
+```shell
+./redis-cli
+```
 
 ## 4.广告缓存的载入与读取
 
