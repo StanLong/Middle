@@ -38,7 +38,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: 123456
+      WORDPRESS_DB_PASSWORD: root
       WORDPRESS_DB_NAME: wordpress
     volumes:
       - wordpress:/var/www/html
