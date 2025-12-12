@@ -105,6 +105,27 @@ mysql         latest    3218b38490ce   2 years ago    516MB
 [root@changgou ~]# docker rmi -f 镜像id  镜像id  镜像id ...
 ```
 
+**docker 导出镜像**
+
+```shell
+# docker save -o <导出文件名.tar> <镜像名:标签>
+[root@node01 ~]# docker save -o ollama.tar d353379de60a
+```
+
+**docker 导入镜像**
+
+```shell
+# docker load -i <导出文件名.tar>
+[root@node05 opt]# docker load -i ollama.tar 
+```
+
+**docker 打标签**
+
+```shell
+# docker tag <原镜像ID> <新镜像名:新标签>
+[root@node05 opt]# docker tag d353379de60a ollama/ollama:latest
+```
+
 # 三、容器命令
 
 说明：有了镜像才可以创建容器, 下载一个 centos镜像来测试学习
