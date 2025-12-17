@@ -163,42 +163,11 @@ kubernetes有多种部署方式，目前主流的方式有kubeadm、minikube、�
 
 ## 环境搭建
 
-​    本次环境搭建需要安装三台Centos服务器（一主二从），然后在每台服务器中分别安装docker（18.06.3），kubeadm（1.17.4）、kubelet（1.17.4）、kubectl（1.17.4）程序。
-
-### 主机安装
-
-安装虚拟机过程中注意下面选项的设置：
-
-- 操作系统环境：CPU（2C）    内存（2G）   硬盘（50G）    
-
-- 语言选择：中文简体
-
-- 软件选择：基础设施服务器
-
-- 分区选择：自动分区
-
-- 网络配置：按照下面配置网路地址信息
-
-  ~~~md
-  网络地址：192.168.109.100  （每台主机都不一样  分别为100、101、102）
-  子网掩码：255.255.255.0
-  默认网关：192.168.109.2
-  DNS：    223.5.5.5
-  ~~~
-
-  ![image-20200505213817934](assets/image-20200505213817934.png)
-
-- 主机名设置：按照下面信息设置主机名
-
-  ~~~md
-  master节点： master
-  node节点：   node1
-  node节点：   node2
-  ~~~
-
-  ![image-20200505214156148](assets/image-20200505214156148.png)
+​    本次环境搭建需要安装三台Centos服务器（一主二从），然后在每台服务器中分别安装docker（18.06.3），kubeadm（1.17.4）、kubelet（1.17.4）、kubectl（1.17.4）程序
 
 ### 环境初始化
+
+**以下九步每台机器上都要检查**
 
 1)    检查操作系统的版本
 
@@ -332,6 +301,47 @@ EOF
 ~~~powershell
 [root@master ~]# reboot
 ~~~
+
+1-6在服务器初始化时已完成。 7-9步整理成如下脚本
+
+```shell
+!#/bin/bash
+
+# 修改linux的内核参数，添加网桥过滤和地址转发功能
+cat > /etc/sysctl.d/kubernetes.conf << EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+
+# 使配置生效
+sysctl -p
+modprobe br_netfilter
+
+# 验证
+lsmod | grep br_netfilter
+
+# 安装ipset和 ipvsadm
+yum install ipset ipvsadm -y
+
+# 为脚本文件添加执行权限
+cat <<EOF >  /etc/sysconfig/modules/ipvs.modules
+#!/bin/bash
+modprobe -- ip_vs
+modprobe -- ip_vs_rr
+modprobe -- ip_vs_wrr
+modprobe -- ip_vs_sh
+modprobe -- nf_conntrack_ipv4
+EOF
+
+# 执行脚本并验证
+chmod +x /etc/sysconfig/modules/ipvs.modules
+/bin/bash /etc/sysconfig/modules/ipvs.modules
+lsmod | grep -e ip_vs -e nf_conntrack_ipv4
+
+# 重启
+# reboot
+```
 
 ### 安装docker
 
