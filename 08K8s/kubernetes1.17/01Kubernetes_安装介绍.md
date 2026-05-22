@@ -28,7 +28,7 @@
   >
   > ​    容器化的应用程序可以跨云服务商、跨Linux操作系统发行版进行部署
 
-![image-20200505183738289](assets/image-20200505183738289.png)
+![image-20200505183738289](../doc/image-20200505183738289.png)
 
 容器化部署方式给带来很多的便利，但是也会出现一些问题，比如说：
 
@@ -41,11 +41,11 @@
 - **Mesos**：Apache的一个资源统一管控的工具，需要和Marathon结合使用
 - **Kubernetes**：Google开源的的容器编排工具
 
-<img src="assets/image-20200524150339551.png" alt="image-20200524150339551" style="border:1px solid;zoom:110%;" />
+<img src="../doc/image-20200524150339551.png" alt="image-20200524150339551" style="border:1px solid;zoom:110%;" />
 
 ## kubernetes简介
 
-<img src="assets/image-20200406232838722.png" alt="image-20200406232838722" style="zoom:100%;border:1px solid;" />
+<img src="../doc/image-20200406232838722.png" alt="image-20200406232838722" style="zoom:100%;border:1px solid;" />
 
 ​    
 
@@ -60,7 +60,7 @@
 - **版本回退**：如果发现新发布的程序版本有问题，可以立即回退到原来的版本
 - **存储编排**：可以根据容器自身的需求自动创建存储卷
 
-![image-20200526203726071](assets/image-20200526203726071.png)
+![image-20200526203726071](../doc/image-20200526203726071.png)
 
 ## kubernetes组件
 
@@ -84,7 +84,7 @@
 >
 > **Docker** : 负责节点上容器的各种操作
 
-<img src="assets/image-20200406184656917.png" alt="image-20200406184656917" style="zoom:200%;" />
+<img src="../doc/image-20200406184656917.png" alt="image-20200406184656917" style="zoom:200%;" />
 
 下面，以部署一个nginx服务来说明kubernetes系统各个组件调用关系：
 
@@ -122,7 +122,7 @@
 
 **NameSpace**：命名空间，用来隔离pod的运行环境
 
-<img src="assets/image-20200403224313355.png" alt="image-20200403224313355" style="zoom:200%;" />
+<img src="../doc/image-20200403224313355.png" alt="image-20200403224313355" style="zoom:200%;" />
 
 
 
@@ -139,7 +139,7 @@ kubernetes集群大体上分为两类：**一主多从**和**多主多从**。
 - 一主多从：一台Master节点和多台Node节点，搭建简单，但是有单机故障风险，适合用于测试环境
 - 多主多从：多台Master节点和多台Node节点，搭建麻烦，安全性高，适合用于生产环境
 
-![image-20200404094800622](assets/image-20200404094800622.png)
+![image-20200404094800622](../doc/image-20200404094800622.png)
 
 > `说明：为了测试简单，本次搭建的是  一主两从   类型的集群`
 
@@ -517,7 +517,7 @@ service/nginx        NodePort    10.104.121.45   <none>        80:30073/TCP   17
 # 4 最后在电脑上访问下部署的nginx服务
 ~~~
 
-<img src="assets/image-20200405142656921.png" alt="image-20200405142656921" style="zoom:80%; border:1px solid" />
+<img src="../doc/image-20200405142656921.png" alt="image-20200405142656921" style="zoom:80%; border:1px solid" />
 
 
 
@@ -537,7 +537,7 @@ service/nginx        NodePort    10.104.121.45   <none>        80:30073/TCP   17
 >
 >​    当然，如果Pod中程序的数据需要持久化，kubernetes还提供了各种`存储`系统。
 
-<img src="assets/image-20200406225334627.png" alt="image-20200406225334627" style="zoom:200%;" />
+<img src="../doc/image-20200406225334627.png" alt="image-20200406225334627" style="zoom:200%;" />
 
 >  学习kubernetes的核心，就是学习如何对集群上的`Pod、Pod控制器、Service、存储`等各种资源进行操作
 
