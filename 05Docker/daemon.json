@@ -1,0 +1,15 @@
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "registry-mirrors": [
+        "https://fas7p1ea.mirror.aliyuncs.com",
+        "https://dockerpull.com",
+        "https://docker.1panel.live",
+        "https://dockerproxy.cn",
+        "https://docker.hpcloud.cloud",
+        "https://docker.1ms.run",
+        "https://hub.rat.dev",
+        "https://docker.1panel.live"
+  ],
+  "insecure-registries": ["192.168.235.12:80"]
+}
+
