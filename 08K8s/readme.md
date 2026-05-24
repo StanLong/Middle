@@ -10,6 +10,10 @@ https://blog.csdn.net/qq_43571324/article/details/134921076
 
 
 
+k8s 版本升级
+
+https://www.cnblogs.com/misakivv/p/18363933
+
 
 
 # k8s常用命令
