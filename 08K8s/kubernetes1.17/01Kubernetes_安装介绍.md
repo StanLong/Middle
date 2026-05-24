@@ -512,7 +512,7 @@ node1    Ready    <none>   8m53s   v1.17.4
 node2    Ready    <none>   8m50s   v1.17.4
 
 # 如果这里没有变成 ready ， 参考文档 https://blog.csdn.net/m0_66908465/article/details/131297723?spm=1001.2014.3001.5501
-#  如果这里没有变成 ready， 还有一个方法是把资料中的 cni-plugins-linux-amd64-v0.8.6 下的所有文件都拷贝到 /opt/cni/bin, 并添加可执行权限
+# 如果这里没有变成 ready， 还有一个方法是把资料中的 cni-plugins-linux-amd64-v0.8.6 下的所有文件都拷贝到 /opt/cni/bin, 并添加可执行权限
 ~~~
 
 至此，kubernetes的集群环境搭建完成
