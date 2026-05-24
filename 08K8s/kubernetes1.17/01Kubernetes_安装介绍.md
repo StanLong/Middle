@@ -250,10 +250,11 @@ cat > /etc/sysctl.d/kubernetes.conf << EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
+vm.swappiness = 0
 EOF
 
 # 重新加载配置
-[root@master ~]# sysctl -p
+[root@master ~]# sysctl -p /etc/sysctl.d/kubernetes.conf
 
 # 加载网桥过滤模块
 [root@master ~]# modprobe br_netfilter
@@ -282,11 +283,16 @@ modprobe -- ip_vs_sh
 modprobe -- nf_conntrack_ipv4
 EOF
 
+
 # 3 为脚本文件添加执行权限
 [root@master ~]# chmod +x /etc/sysconfig/modules/ipvs.modules
 
 # 4 执行脚本文件
 [root@master ~]# /bin/bash /etc/sysconfig/modules/ipvs.modules
+
+# 这里如果有报错的话，那是因为
+# 老内核（CentOS7 等）：模块名 nf_conntrack_ipv4
+# 新内核（CentOS8+/Ubuntu 新版）：合并成 nf_conntrack，不再区分 ipv4/ipv6
 
 # 5 查看对应的模块是否加载成功
 [root@master ~]# lsmod | grep -e ip_vs -e nf_conntrack_ipv4
@@ -350,6 +356,7 @@ gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
 EOF
 
 # 安装kubeadm、kubelet和kubectl
+# --setopt=obsoletes=0 这个参数的意思是临时关闭替换旧版本包， linux 默认安装新包时会把旧版本包替换掉。
 yum install --setopt=obsoletes=0 kubeadm-1.17.4-0 kubelet-1.17.4-0 kubectl-1.17.4-0 -y
 
 # 配置kubelet的cgroup
@@ -414,7 +421,8 @@ cat > /etc/docker/daemon.json << EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "registry-mirrors": [
-     "https://dockerpull.com"
+     "https://dockerpull.com",
+     "https://docker.xuanyuan.me"
   ]
 }
 EOF
@@ -441,7 +449,14 @@ EOF
     --kubernetes-version=v1.17.4 \
     --pod-network-cidr=10.244.0.0/16 \
     --service-cidr=10.96.0.0/12 \
+    --image-repository registry.aliyuncs.com/google_containers \
     --apiserver-advertise-address=192.168.109.100
+
+#-–apiserver-advertise-address 集群通告地址（master内网）
+#–-image-repository 由于默认拉取镜像地址k8s.gcr.io国内无法访问，这里指定阿里云镜像仓库地址
+#–-kubernetes-version K8s版本，与上面安装的一致
+#–-service-cidr 集群内部虚拟网络，Pod统一访问入口
+#-–pod-network-cidr Pod网络，与下面部署的CNI网络组件yaml中保持一致
 
 # 创建必要文件
 [root@master ~]# mkdir -p $HOME/.kube
@@ -490,6 +505,7 @@ node1    Ready    <none>   8m53s   v1.17.4
 node2    Ready    <none>   8m50s   v1.17.4
 
 # 如果这里没有变成 ready ， 参考文档 https://blog.csdn.net/m0_66908465/article/details/131297723?spm=1001.2014.3001.5501
+#  如果这里没有变成 ready， 还有一个方法是把资料中的 cni-plugins-linux-amd64-v0.8.6 下的所有文件都拷贝到 /opt/cni/bin, 并添加可执行权限
 ~~~
 
 至此，kubernetes的集群环境搭建完成
