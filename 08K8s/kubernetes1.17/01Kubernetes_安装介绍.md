@@ -368,24 +368,23 @@ EOF
 
 # 在安装kubernetes集群之前，必须要提前准备好集群需要的镜像，所需镜像可以通过下面命令查看
 # kubeadm config images list
-
-# 下载镜像
+# 下载镜像  ------- 这一步不需要，在执行 kubeadm init 时指定 --image-repository 即可
 # 此镜像在kubernetes的仓库中,由于网络原因,无法连接，下面提供了一种替代方案
-images=(
-    kube-apiserver:v1.17.4
-    kube-controller-manager:v1.17.4
-    kube-scheduler:v1.17.4
-    kube-proxy:v1.17.4
-    pause:3.1
-    etcd:3.4.3-0
-    coredns:1.6.5
-)
-
-for imageName in ${images[@]} ; do
-    docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName
-    docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName 		k8s.gcr.io/$imageName
-    docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName
-done
+# images=(
+#     kube-apiserver:v1.17.4
+#     kube-controller-manager:v1.17.4
+#     kube-scheduler:v1.17.4
+#     kube-proxy:v1.17.4
+#     pause:3.1
+#     etcd:3.4.3-0
+#     coredns:1.6.5
+# )
+# 
+# for imageName in ${images[@]} ; do
+#     docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName
+#     docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName 		k8s.gcr.io/$imageName
+#     docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName
+# done
 
 # 重启
 # reboot
@@ -421,8 +420,14 @@ cat > /etc/docker/daemon.json << EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "registry-mirrors": [
-     "https://dockerpull.com",
-     "https://docker.xuanyuan.me"
+        "https://fas7p1ea.mirror.aliyuncs.com",
+        "https://dockerpull.com",
+        "https://docker.1panel.live",
+        "https://dockerproxy.cn",
+        "https://docker.hpcloud.cloud",
+        "https://docker.1ms.run",
+        "https://hub.rat.dev",
+        "https://docker.1panel.live"
   ]
 }
 EOF
@@ -450,13 +455,15 @@ EOF
     --pod-network-cidr=10.244.0.0/16 \
     --service-cidr=10.96.0.0/12 \
     --image-repository registry.aliyuncs.com/google_containers \
-    --apiserver-advertise-address=192.168.109.100
+    --apiserver-advertise-address=192.168.109.100 \
+    --ignore-preflight-errors=all
 
-#-–apiserver-advertise-address 集群通告地址（master内网）
-#–-image-repository 由于默认拉取镜像地址k8s.gcr.io国内无法访问，这里指定阿里云镜像仓库地址
-#–-kubernetes-version K8s版本，与上面安装的一致
-#–-service-cidr 集群内部虚拟网络，Pod统一访问入口
-#-–pod-network-cidr Pod网络，与下面部署的CNI网络组件yaml中保持一致
+# -–apiserver-advertise-address 集群通告地址（master内网）
+# –-image-repository 由于默认拉取镜像地址k8s.gcr.io国内无法访问，这里指定阿里云镜像仓库地址
+# –-kubernetes-version K8s版本，与上面安装的一致
+# –-service-cidr 集群内部虚拟网络，Pod统一访问入口
+# -–pod-network-cidr Pod网络，与下面部署的CNI网络组件yaml中保持一致
+# --ignore-preflight-errors 强制忽略所有前置检查错误，继续执行命令
 
 # 创建必要文件
 [root@master ~]# mkdir -p $HOME/.kube
