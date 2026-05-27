@@ -55,6 +55,7 @@ kube-proxy目前支持三种工作模式:
 # 此模式必须安装ipvs内核模块，否则会降级为iptables
 # 开启ipvs
 [root@master ~]# kubectl edit cm kube-proxy -n kube-system
+# 修改这一项为 ipvs,     mode: "ipvs"
 [root@master ~]# kubectl delete pod -l k8s-app=kube-proxy -n kube-system
 [root@node1 ~]# ipvsadm -Ln
 IP Virtual Server version 1.2.1 (size=4096)
@@ -71,8 +72,8 @@ TCP  10.97.97.97:80 rr
 Service的资源清单文件：
 
 ~~~yaml
-kind: Service  # 资源类型
 apiVersion: v1  # 资源版本
+kind: Service  # 资源类型
 metadata: # 元数据
   name: service # 资源名称
   namespace: dev # 命名空间
@@ -384,7 +385,8 @@ spec:
 ~~~powershell
 # 创建service
 [root@master ~]# kubectl  create -f service-externalname.yaml
-service/service-externalname created
+service/service-exte
+rnalname created
 
 # 域名解析
 [root@master ~]# dig @10.96.0.10 service-externalname.dev.svc.cluster.local
