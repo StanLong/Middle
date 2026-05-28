@@ -97,7 +97,7 @@ https://git-scm.com/（傻瓜式安装）
       volumes:
         - './config:/etc/gitlab'
         - './logs:/var/log/gitlab'
-        - './data/var/opt/gitlab'
+        - './data:/var/opt/gitlab'
   ```
 
 - 启动容器（需要稍等一小会……）
