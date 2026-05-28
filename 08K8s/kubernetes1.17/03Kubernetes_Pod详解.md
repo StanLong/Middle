@@ -2199,6 +2199,7 @@ metrics-server可以用来收集集群中的资源使用情况
 [root@master ~]# yum install git -y
 # 获取metrics-server, 注意使用的版本
 [root@master ~]# git clone -b v0.3.6 https://github.com/kubernetes-incubator/metrics-server
+# 已下载到当前目录 metrics-server.zip 
 # 修改deployment, 注意修改的是镜像和初始化参数
 [root@master ~]# cd /root/metrics-server/deploy/1.8+/
 [root@master 1.8+]# vim metrics-server-deployment.yaml
