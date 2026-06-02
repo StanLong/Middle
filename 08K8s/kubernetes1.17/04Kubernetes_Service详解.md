@@ -432,7 +432,7 @@ Ingress（以Nginx为例）的工作原理如下：
 [root@master ~]# mkdir ingress-controller
 [root@master ~]# cd ingress-controller/
 
-# 获取ingress-nginx，本次案例使用的是0.30版本
+# 获取ingress-nginx，本次案例使用的是0.30版本， 如果下载不下来就直接使用资料中提供的文件
 [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
 [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/baremetal/service-nodeport.yaml
 
